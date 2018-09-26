@@ -1,4 +1,7 @@
 package s02;
+
+import java.util.Arrays;
+
 public class IntQueueChained {
   //======================================================================
   /* TODO: adapt using pseudo-pointers instead of queue node objects
@@ -10,43 +13,114 @@ public class IntQueueChained {
    * - test
    */
   //======================================================================
-  static class QNode {
-    final int    elt;
-    QNode next = null;
-    // ----------
-    public QNode(int e) {elt=e;}
+	
+  private static final int DEFAULT_MEME_SIZE = 1024;	//number of data elements at the initialisation of the memory
+  private static final int NIL = -1;					//null pointer of (used for the last element)								
+	
+  private static int[] data = new int[DEFAULT_MEME_SIZE];		//memory data
+  private static int[] ptr = new int[DEFAULT_MEME_SIZE];		//memory pointer to next data element
+  
+  private static int emptyMemPtr = 0;
+  private static int actualMemSize = DEFAULT_MEME_SIZE;
+  
+  /*
+   * Initialise empty memory pointers
+   */
+  static {
+	  for (int i = 0; i < DEFAULT_MEME_SIZE-1; i++) {
+		  data[i] = 0;
+		  ptr[i] = i+1;
+	  }
+	  data[DEFAULT_MEME_SIZE-1] = 0;
+	  ptr[DEFAULT_MEME_SIZE-1] = NIL;
   }
-  //======================================================================
-  private QNode front;
-  private QNode back;
-  // ------------------------------
-  public IntQueueChained() {}
-  // --------------------------
-  public void enqueue (int elt) {
-    QNode aux = new QNode(elt);
-    if (back==null) {
-      back = aux; front = aux;
-    } else {
-      back.next = aux;
-      back = aux;
-    } 
+	
+  private static int allocate() {
+	  int allocated = emptyMemPtr;			//pointer to newly allocated memory
+	  
+	  emptyMemPtr = ptr[emptyMemPtr];
+	  if (emptyMemPtr == NIL)
+		  doubleMem();			//double memory if needed
+	  
+	  return allocated;
   }
-  // --------------------------
-  public boolean isEmpty() {
-    return back==null;
+  
+  
+  /*
+   * Unallocate the memory at the given pointer and the num-1 following elements
+   * If num = NIL the memory is unallocated until NIL is reached
+   * PRE: the pointer doesn't point to a free memory cell
+   * memPtr: Pointer to the memory to unallocate
+   */
+  private static void unallocate(int memPtr, int num) {
+	  if (num == 0) return;
+	  if (ptr[memPtr] != NIL) {
+		  unallocate(ptr[memPtr], num-1);
+	  }
+	  ptr[memPtr] = emptyMemPtr;
+	  ptr[emptyMemPtr] = memPtr;
   }
-  // --------------------------
-  public int consult() {
-    return front.elt;
-  }
-  // --------------------------
-  public int dequeue() {
-    int e = front.elt;
-    if (front == back) {
-      back = null; front = null;
-    } else {
-      front = front.next;
-    }
-    return e;
-  }
+  
+  	private static void doubleMem() {
+  		int newMemSize = 2 * actualMemSize;
+	  	Arrays.copyOf(ptr, newMemSize);
+	  	Arrays.copyOf(data, newMemSize);
+	  
+	  	for (int i = actualMemSize; i < newMemSize-1; i++) {
+	  		ptr[i] = i+1;
+	  	}
+	  	
+	  	ptr[newMemSize-1] = emptyMemPtr;
+	  	emptyMemPtr = actualMemSize;
+	  	
+	  	actualMemSize = newMemSize;
+	}
+  
+  
+  
+  
+  
+  	//======================================================================
+  	private int frontPtr = NIL;
+  	private int backPtr = NIL;
+  	// ------------------------------
+  	public IntQueueChained() {}
+  	// --------------------------
+  
+  	public void enqueue (int elt) {
+  		if (frontPtr == NIL && backPtr == NIL) {
+  			backPtr = allocate();
+  			frontPtr = backPtr;
+  			ptr[backPtr] = NIL;
+  		} else {
+  			ptr[backPtr] = allocate();
+  			backPtr = ptr[backPtr];
+  		}
+  		data[backPtr] = elt;
+  	}
+  	// --------------------------
+  	public boolean isEmpty() {
+  		return backPtr == NIL;
+  	}
+  	// --------------------------
+  	public int consult() {
+  		return data[frontPtr];
+  	}
+  	// --------------------------
+  	public int dequeue() {
+	  int unallocPtr = frontPtr;
+    	int removedData = data[frontPtr];
+    	frontPtr = ptr[frontPtr];
+    
+    	unallocate(unallocPtr, 1);
+    
+    	return removedData;
+  	}
+  
+  	@Override
+  	public void finalize() {
+	  	if (frontPtr != NIL) {
+		  	unallocate(frontPtr, NIL);
+	  	}
+  	}
 }
