@@ -41,7 +41,8 @@ public class IntQueueChained {
 		firstFreeCell = ptr[firstFreeCell];
 		if (firstFreeCell == NIL)
 			doubleMem();			//double memory if needed
-	  
+		ptr[allocated] = NIL;
+		
 		return allocated;
 	}
 
@@ -57,8 +58,16 @@ public class IntQueueChained {
 		if (ptr[memPtr] != NIL) {
 			unallocate(ptr[memPtr], num-1);
 		}
+		//two possibilities
+		//*
 		ptr[memPtr] = firstFreeCell;
+		firstFreeCell = memPtr;
+		//*/
+		/*
+		int oldFFCellPtr = ptr[firstFreeCell];
 		ptr[firstFreeCell] = memPtr;
+		ptr[memPtr] = oldFFCellPtr;
+		//*/
 	}
   
   	private static void doubleMem() {
@@ -95,6 +104,7 @@ public class IntQueueChained {
   		} else {
   			ptr[backPtr] = allocate();
   			backPtr = ptr[backPtr];
+  			ptr[backPtr] = NIL;
   		}
   		data[backPtr] = elt;
   	}
@@ -108,9 +118,11 @@ public class IntQueueChained {
   	}
   	// --------------------------
   	public int dequeue() {
-	  int unallocPtr = frontPtr;
+  		int unallocPtr = frontPtr;
     	int removedData = data[frontPtr];
     	frontPtr = ptr[frontPtr];
+    	if (frontPtr == NIL)
+    		backPtr = NIL;
     
     	unallocate(unallocPtr, 1);
     
