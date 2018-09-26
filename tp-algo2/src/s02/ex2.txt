@@ -1,0 +1,8 @@
+a() 
+	Le sous arbre droit de chaque element a l'extreme gauche et deplacer de droit a gauche. A condition qu'il n'y a pas de sous arbre a Gauche.
+	Ex : si l'arbre est 100% vertical (chaque neud a seulement 1 element max, gauche ou droit et l'arbre as qu'une feuille). Et si le parametre num est asser grand. L'arbre vertical est deplacer a l'extreme gauche.
+	
+	
+b()
+	Mesure la profondeur de la feuille la moin profonde
+	Mesure la hauteur minimal de l'arbre
