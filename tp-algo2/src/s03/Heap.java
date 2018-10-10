@@ -42,13 +42,31 @@ public class Heap<E extends Comparable<E>> {
   /** Moves down the element at index i, by successive swaps, 
    *  until it is correctly positioned */
   private void siftDown(int i) {
-    // ...
-    // while(node i has two children) {
-    //  ...
-    // }
-    // maybe node i has one child, or it is a leaf
+	  boolean smallerLeft = false;
+	  if (buffer.contains(leftChild(i))) {
+		  smallerLeft = buffer.get(leftChild(i)).compareTo(buffer.get(i)) < 0;
+	  }
+	  boolean smallerRight = false;
+	  if (buffer.contains(rightChild(i))) {
+		  smallerRight = buffer.get(rightChild(i)).compareTo(buffer.get(i)) < 0;
+	  }
     
-    // TODO - A COMPLETER !
+    if (smallerLeft && smallerRight) {
+    	int compVal = buffer.get(leftChild(i)).compareTo(buffer.get(rightChild(i)));
+    	if (compVal < 0) {
+    		swap(i, leftChild(i));
+    		siftDown(leftChild(i));
+    	} else {
+    		swap(i, rightChild(i));
+    		siftDown(rightChild(i));
+    	}
+    } else if(smallerLeft) {
+    	swap(i, leftChild(i));
+    	siftDown(leftChild(i));
+    } else if(smallerRight) {
+    	swap(i, rightChild(i));
+    	siftDown(rightChild(i));
+    }	//if (smallerLeft == false && smallerRight == false) => is at the right place
   }
   // ------------------------------------------------------------
   /** Moves up the element at index i, by successive swaps, 
@@ -62,7 +80,7 @@ public class Heap<E extends Comparable<E>> {
   }
   
   private boolean smallerThanItsParent(int i) {
-     return false; // TODO - A COMPLETER !
+     return buffer.get(i).compareTo(buffer.get(parent(i))) < 0;
   }
   // ------------------------------------------------------------
   private int parent(int i) {
@@ -91,16 +109,16 @@ public class Heap<E extends Comparable<E>> {
   }
   
   /* ------------ Example: --------------------
-                        9             
-             2´´´´´´´´´´ ```````4     
-          12´ ``8            6´´ ```7 
-  3´´´´´´´ `   ´ ``10     14´ `   1´ `
-5´ ``0            ´ `11               
-    ´ `13                             
+ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½9ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½2ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½```````4ï¿½ï¿½ï¿½ï¿½ï¿½
+ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½12ï¿½ï¿½``8ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½6ï¿½ï¿½ï¿½```7ï¿½
+ï¿½ï¿½3ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½`ï¿½ï¿½ï¿½ï¿½ï¿½``10ï¿½ï¿½ï¿½ï¿½ï¿½14ï¿½ï¿½`ï¿½ï¿½ï¿½1ï¿½ï¿½`
+5ï¿½ï¿½``0ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½`11ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½`13ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
    ------------------------------------------ */
   
   private static final char SPACE = '\u00A0'; // the rarer non-breaking space
-  private static final char LMARK = '´';
+  private static final char LMARK = 'ï¿½';
   private static final char RMARK = '`';
   private static final String FIRST_SEP = ""+LMARK+SPACE+RMARK;
   private static final String OTHER_SEP = ""+SPACE+SPACE+SPACE;
@@ -122,14 +140,14 @@ public class Heap<E extends Comparable<E>> {
       res.add(new StringBuilder(eltStr)); 
       return res;
     }
-    replaceExtremeSpaces(ls.get(0), SPACE, LMARK);  // "    elt´´´´´"
+    replaceExtremeSpaces(ls.get(0), SPACE, LMARK);  // "    eltï¿½ï¿½ï¿½ï¿½ï¿½"
     replaceExtremeSpaces(rs.get(0), RMARK, SPACE);  // "````elt     "
     String sep = FIRST_SEP;
     for(int i=0;  i<ls.size() || i<rs.size(); i++) {
       StringBuilder l=(i<ls.size()) ? ls.get(i) : blockOf(lw, SPACE);
       StringBuilder r=(i<rs.size()) ? rs.get(i) : blockOf(rw, SPACE);
       res.add(l.append(sep).append(r));
-      sep=OTHER_SEP;  // only the first line is joined with ´ `
+      sep=OTHER_SEP;  // only the first line is joined with ï¿½ `
     }
     StringBuilder first=blockOf(lw+1, SPACE).append(eltStr);
     int pad=(lw+rw+sep.length()) - first.length();

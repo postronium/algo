@@ -4,7 +4,7 @@ public class PtyQueue<E, P extends Comparable<P>> {
   private final Heap<HeapElt> heap;
   // ------------------------------------------------------------
   public PtyQueue() {
-    heap=null; // TODO - A COMPLETER
+    heap = new Heap<HeapElt>();
   }
   // ------------------------------------------------------------
   public boolean isEmpty() {
@@ -18,17 +18,17 @@ public class PtyQueue<E, P extends Comparable<P>> {
   
   /** Returns the element with highest priority. PRE: !isEmpty() */ 
   public E consult() {
-    return null; // TODO - A COMPLETER 
+    return heap.min().element;
   }
 
   /** Returns the priority of the element with highest priority. PRE: !isEmpty() */ 
   public P consultPty() {
-    return null; // TODO - A COMPLETER 
+    return heap.min().priority;
   }
   
   /** Removes and returns the element with highest priority. PRE: !isEmpty() */ 
   public E dequeue() {
-    return null; // TODO - A COMPLETER 
+    return heap.removeMin().element;
   }
 
   @Override public String toString() {
@@ -36,14 +36,16 @@ public class PtyQueue<E, P extends Comparable<P>> {
   }
   //=============================================================
   class HeapElt implements Comparable<HeapElt> {
-    // TODO A COMPLETER
+    P priority;
+    E element;
     
     public HeapElt(P thePty, E theElt) {
-      // TODO A COMPLETER
+    	element = theElt;
+    	priority = thePty;
     }
 
-    @Override public int compareTo(HeapElt arg0) {
-      return 0; // TODO A COMPLETER
+    @Override public int compareTo(HeapElt ele) {
+      return ele.priority.compareTo(priority);
     }
   }
 }
