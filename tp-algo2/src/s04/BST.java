@@ -1,5 +1,7 @@
 package s04;
 
+import java.util.Arrays;
+
 // =======================
 public class BST<E extends Comparable<E>> {
 	protected BTree<E> tree;
@@ -10,8 +12,27 @@ public class BST<E extends Comparable<E>> {
 		crtSize = 0;
 	}
 
-	public BST(E[] tab) { // PRE sorted, no duplicate
-		// TODO - A COMPLETER
+	public BST(E[] tab) {
+		System.out.println("fill with data");
+		crtSize = 0;
+		fillTree(tab, 0, tab.length);
+	}
+	
+	/**
+	 * @param tab data to put in the tree
+	 * @param sIndex start Index
+	 * @param eIndex end index (not included)
+	 */
+	public void fillTree(E[] tab, int sIndex, int eIndex) {
+		int length = eIndex - sIndex;
+		if (length == 0) return;			//nothing to do
+		if (length < 3)						//add 1 or 2 elements in normal order
+			for(int i = sIndex; i < eIndex; i++)
+				this.locate(tab[i]).insert(tab[i]);
+		int midIndex = sIndex + length/2;
+		this.add(tab[midIndex]);
+		fillTree(tab, sIndex, midIndex);
+		fillTree(tab, midIndex+1, eIndex);
 	}
 
 	/** returns where e is, or where it should be inserted as a leaf */
@@ -35,8 +56,10 @@ public class BST<E extends Comparable<E>> {
 
 	public void add(E e) {
 		BTreeItr<E> ePos =  this.locate(e);
-		if (ePos.isBottom())								//if e must be inserted at the bottom
+		if (ePos.isBottom()) {								//if e must be inserted at the bottom
+			this.crtSize++;
 			ePos.insert(e);										//insert it
+		}
 															//else e is already in the tree
 	}
 
@@ -47,6 +70,7 @@ public class BST<E extends Comparable<E>> {
 		
 		if (!ePos.hasLeft() && !ePos.hasRight()) {			//e is a node
 			ePos.up().cut();									//remove e
+			this.crtSize--;
 			return ;
 		}
 		
@@ -54,6 +78,7 @@ public class BST<E extends Comparable<E>> {
 			BTree<E> leftTree = ePos.left().cut();			//save children of e
 			BTree<E> rightTree = ePos.right().cut();
 			ePos.cut();										//remove e
+			this.crtSize--;
 			BTreeItr<E> itr = new BTreeItr<E>(leftTree);
 			
 			if (itr.isBottom())
@@ -73,6 +98,7 @@ public class BST<E extends Comparable<E>> {
 		else												//only right
 			lower = ePos.right().cut();							//break link below the element to remove
 		ePos.cut();
+		this.crtSize--;
 		ePos.paste(lower);
 		
 		
