@@ -13,7 +13,6 @@ public class BST<E extends Comparable<E>> {
 	}
 
 	public BST(E[] tab) {
-		System.out.println("fill with data");
 		crtSize = 0;
 		fillTree(tab, 0, tab.length);
 	}
@@ -64,45 +63,15 @@ public class BST<E extends Comparable<E>> {
 	}
 
 	public void remove(E e) {
-		BTreeItr<E> ePos =  this.locate(e);
-		if (ePos.isBottom()) 								//e not found, nothing to remove
-			return;
-		
-		if (!ePos.hasLeft() && !ePos.hasRight()) {			//e is a node
-			ePos.up().cut();									//remove e
-			this.crtSize--;
-			return ;
-		}
-		
-		if (ePos.hasLeft() && ePos.hasRight()) {
-			BTree<E> leftTree = ePos.left().cut();			//save children of e
-			BTree<E> rightTree = ePos.right().cut();
-			ePos.cut();										//remove e
-			this.crtSize--;
-			BTreeItr<E> itr = new BTreeItr<E>(leftTree);
-			
-			if (itr.isBottom())
-				ePos.cut();
-			
-			while(!itr.right().isBottom())					//go to right most biggest) element
-				itr = itr.right();
-			
-			ePos.paste(itr.cut());
-			ePos.left().paste(leftTree);
-			ePos.right().paste(rightTree);
-		}
-		
-		BTree<E> lower;
-		if (ePos.hasLeft() && !ePos.hasRight()) 			//e hase only left child
-			lower = ePos.left().cut();							//break link below the element to remove
-		else												//only right
-			lower = ePos.right().cut();							//break link below the element to remove
-		ePos.cut();
-		this.crtSize--;
-		ePos.paste(lower);
-		
-		
-			
+		if (!contains(e)) return;
+		  BTreeItr<E> elt = locate(e);
+		  while (!elt.isBottom() && !elt.right().isBottom()) {
+		     elt.rotateLeft();
+		     elt = elt.left();
+		  }
+		  BTree<E> leftChild = elt.cut();
+		  elt.paste(leftChild.root().left().cut());
+		crtSize--;
 	}
 
 	public boolean contains(E e) {
