@@ -1,0 +1,35 @@
+1)
+
+    Activate Warnings in Eclipse
+        Indirect access to static member
+        Methode can be static
+        Methode can potentially be static
+        Possible accidental boolean assignement e.g. 'if(a = b)'
+        Boxing and unboxing conventions
+        Value of methode parameter is not used
+        Value of exeption parameter is not used
+        
+    Quelques bugs sont reconnus mais pas tous    
+
+    CTRL+A et CTRL+Shift+F pour formatter le coder.
+        Deja la on voit du code bizzar comme un point-virgule sur une seule ligne
+    
+    Find bug ne fonctione pas sur mon eclipse :( 
+
+
+
+2)
+    Un hotspot est une fonction qui utilise beaucoup de CPU
+        Pour chercher un hotspot dans VisualVM click droit sur une fonction et click sur 'Find hotspot'. Tout les sous fonctions de la fonction selectione seronts lister dans l'ordre croissant de leur temps CPU.
+
+    Le Calltree est l'arboressence d'apelle de fonctions.
+
+    On a essayer de profiler une autre application qui fonctione avec la JVM mais sans success. Le calltree n'apparait pas.
+    
+    L'instrumentation (Profiling) ajoute du code dans chaque methode pour voir son temps d'execution.
+    Avec le Sampling VisualVM estime le temps d'execution en controlant les Threads.
+    Source : https://blog.idrsolutions.com/2014/04/profiling-vs-sampling-java-visualvm/
+
+
+3)
+    Notre test passe si on ajoute 10 elements mais ne passe plus si le stack ateint 15 elements ou plus. Si on regarde le code coverage on peut voir qu'une partie de la methode 'checkSize' n'as pas Tester. En sachant quelle ligne ne sont pas executer on peut adapter nos test pour decouvrir des bugs.
