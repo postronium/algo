@@ -1,27 +1,37 @@
 package s12;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class WavyListSearching {
-  //-------------------------------------------------
-  // A "wavy" list is a *circular* list of size n >= 3, where:
-  // - for all i, t[i] != t["i+1"]
-  // - there is a single i such that t["i-1"] > t[i] < t["i+1"]
-  // - there is a single j such that t["j-1"] < t[j] > t["j+1"]
-  //-------------------------------------------------
-  // Algo: jump forward or backward depending on the "trend" at
-  //       the current position, or stay here if it's better
-  //   OR
-  // Algo: jump forward or backward, whichever is best
-  //-------------------------------------------------
 
-  /** PRE: t is a "wavy" list
-      @returns: the index containing the minimum element
-  */
-  public static<E extends Comparable<E>> int minLocation(List<E> t) {
-    return -1;  // TODO
-  }
+    /** minLocation
+     *
+     * @param t a wavy list
+     * @return index of the minimal element in the list
+     */
+    public static <E extends Comparable<E>> int minLocation(List<E> t) {
+        final int n = t.size();
+        int jump = n;
+        int i = 0; // i is the "current location"; initially any index can be chosen
+        while (true) {
+            jump = (jump == 1) ? 1 : (jump / 2);
+            int next = (i + 1) % n, prev = (i - 1 + n) % n;
+            boolean prevIsLower = isLower(t, prev, i);
+            boolean nextIsLower = isLower(t, next, i);
 
+            if (prevIsLower && nextIsLower){
+                if (isLower(t, prev, next)) i = prev;
+                else i = next;
+            }
+            else if (prevIsLower) i = prev;
+            else if (nextIsLower) i = next;
+            else break;
+            
+        }
+        return i;
+    }
+
+    public static <E extends Comparable<E>> boolean isLower(List<E> t, int i, int j){
+        return t.get(i).compareTo(t.get(j)) < 0;
+    }
 }
