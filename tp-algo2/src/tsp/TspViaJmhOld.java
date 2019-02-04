@@ -1,4 +1,5 @@
 package tsp;
+
 import java.io.IOException;
 
 import org.openjdk.jmh.annotations.Mode;
@@ -9,29 +10,25 @@ import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 
 public class TspViaJmhOld {
-  public static void main(String... args) throws RunnerException, IOException {
-    if (args.length>0) {
-      // Use standard JHM Main.
-      // Command line options: try "-h" for a description
-      org.openjdk.jmh.Main.main(args);
-      return;
-    }
-    // "-bm avgt -f 2 -wi 3 -i 4 -p algoId=120,177,0 -p nbOfCities=50000"
-    new Runner(config(true)).run();  // normal (with JIT)
-    // idem but: "-p nbOfCities=10000 -jvmArgsAppend -Xint"
-    //new Runner(config(false)).run(); // without JIT (far slower)
-  }
+	public static void main(String... args) throws RunnerException, IOException {
+		if (args.length > 0) {
+			// Use standard JHM Main.
+			// Command line options: try "-h" for a description
+			org.openjdk.jmh.Main.main(args);
+			return;
+		}
+		// "-bm avgt -f 2 -wi 3 -i 4 -p algoId=120,177,0 -p nbOfCities=50000"
+		//new Runner(config(true)).run(); // normal (with JIT)
+		// idem but: "-p nbOfCities=10000 -jvmArgsAppend -Xint"
+		new Runner(config(false)).run(); // without JIT (far slower)
+	}
 
-  static Options config(boolean withJit) {
-    int nbOfCities = withJit ? 50000 : 10000;
-    ChainedOptionsBuilder ob = new OptionsBuilder()
-    .warmupIterations(3)
-    .measurementIterations(4)
-    .forks(2)
-    .mode(Mode.AverageTime)
-    .param("algoId", "120", "177", "0")
-    .param("nbOfCities", ""+nbOfCities);
-    if (!withJit) ob=ob.jvmArgsAppend("-Xint");
-    return ob.build();
-  }
+	static Options config(boolean withJit) {
+		int nbOfCities = withJit ? 50000 : 10000;
+		ChainedOptionsBuilder ob = new OptionsBuilder().warmupIterations(3).measurementIterations(4).forks(2)
+				.mode(Mode.AverageTime).param("algoId", "0", "177", "120").param("nbOfCities", "" + nbOfCities);
+		if (!withJit)
+			ob = ob.jvmArgsAppend("-Xint");
+		return ob.build();
+	}
 }
