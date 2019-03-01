@@ -2,6 +2,7 @@ package tsp;
 
 import java.io.IOException;
 
+/*
 import org.openjdk.jmh.annotations.Mode;
 import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.RunnerException;
@@ -35,3 +36,4 @@ public class TspViaJmh {
 		return ob.build();
 	}
 }
+*/

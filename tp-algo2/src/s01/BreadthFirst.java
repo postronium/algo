@@ -1,9 +1,5 @@
 
 package s01;
-
-import btree.BTree;
-import btree.BTreeItr;
-
 public class BreadthFirst {
 
   public static void visitLevel(BTree t, int level) {
