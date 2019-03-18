@@ -148,18 +148,7 @@ public class GraphUtils {
 
     // ----------------------------------------------------------------------
     public static List<Integer> pathBetween(DiGraph g, int fromVid, int toVid) {
-        boolean[][] graph = transitiveClosure(g);
-        BTree<Integer> tree = bestFirstForest(g, fromVid);
-        BTreeItr<Integer> bottom = locate(tree.root(), toVid);
-
-        List<Integer> path = new LinkedList<Integer>();
-
-        while (!bottom.isRoot()) {
-            path.add(bottom.consult());
-            bottom = bottom.up();
-        }
-
-        return path;
+        return null;
     }
 
     // ----------------------------------------------------------------------
