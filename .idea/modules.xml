@@ -2,11 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-<<<<<<< HEAD
       <module fileurl="file://$PROJECT_DIR$/.idea/algo.iml" filepath="$PROJECT_DIR$/.idea/algo.iml" />
-=======
-      <module fileurl="file://$PROJECT_DIR$/.idea/tp-algo2.iml" filepath="$PROJECT_DIR$/.idea/tp-algo2.iml" />
->>>>>>> ce0e5aa2de914f6d3d04fdfd21659b1de78fa0ff
     </modules>
   </component>
 </project>

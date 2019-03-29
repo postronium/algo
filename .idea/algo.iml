@@ -2,35 +2,8 @@
 <module type="JAVA_MODULE" version="4">
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
-    <content url="file://$MODULE_DIR$">
-      <sourceFolder url="file://$MODULE_DIR$/tp-algo2/src" isTestSource="false" />
-      <excludeFolder url="file://$MODULE_DIR$/tp-algo2/src/s01" />
-      <excludeFolder url="file://$MODULE_DIR$/tp-algo2/src/s02" />
-      <excludeFolder url="file://$MODULE_DIR$/tp-algo2/src/s03" />
-      <excludeFolder url="file://$MODULE_DIR$/tp-algo2/src/s04" />
-      <excludeFolder url="file://$MODULE_DIR$/tp-algo2/src/s05" />
-      <excludeFolder url="file://$MODULE_DIR$/tp-algo2/src/s06" />
-      <excludeFolder url="file://$MODULE_DIR$/tp-algo2/src/s07" />
-      <excludeFolder url="file://$MODULE_DIR$/tp-algo2/src/s08" />
-      <excludeFolder url="file://$MODULE_DIR$/tp-algo2/src/s09" />
-      <excludeFolder url="file://$MODULE_DIR$/tp-algo2/src/s10" />
-      <excludeFolder url="file://$MODULE_DIR$/tp-algo2/src/s11" />
-      <excludeFolder url="file://$MODULE_DIR$/tp-algo2/src/s12" />
-      <excludeFolder url="file://$MODULE_DIR$/tp-algo2/src/s13" />
-      <excludeFolder url="file://$MODULE_DIR$/tp-algo2/src/tsp" />
-    </content>
+    <content url="file://$MODULE_DIR$" />
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="queensfx_s15" level="project" />
-    <orderEntry type="module-library">
-      <library name="JUnit4">
-        <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY$/junit/junit/4.12/junit-4.12.jar!/" />
-          <root url="jar://$MAVEN_REPOSITORY$/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
   </component>
 </module>
