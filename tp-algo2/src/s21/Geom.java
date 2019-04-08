@@ -1,8 +1,6 @@
 package s21;
 
-import javax.swing.text.Segment;
 import java.awt.Point;
-import java.awt.geom.Point2D;
 
 public class Geom {
 
@@ -120,7 +118,7 @@ public class Geom {
     }
 
     public static void main(String[] args) {
-        s21.CG.main(args);
+        s21.Geom.main(args);
     }
 
 }
